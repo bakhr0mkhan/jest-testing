@@ -1,5 +1,6 @@
-const { requireTitleAndBody, belongsToUser } = require('../functions/post')
-const { posts } = require('../dummy')
+const { requireTitleAndBody, belongsToUser } = require('../functions/post');
+const { posts } = require('../dummy');
+const axios = require('axios').default;
 
 describe('belongsToUser()', () => {
     test("belongsToUser() should return false if no valid args passed", () => {
@@ -32,3 +33,16 @@ describe("requireTitleAndBody()", () => {
         expect(result).toBe(true);
     });
 });
+
+describe('Posts from backend', () => {
+    test('response status is 200', async () => {
+        const response = await axios.get('https://jsonplaceholder.typicode.com/posts');
+        const { status } = response;
+        expect(status).toBe(200);
+    });
+    test('should fetch at least a post', async () => {
+        const response = await axios.get('https://jsonplaceholder.typicode.com/posts');
+        const { data } = response;
+        expect(data.length).toBeGreaterThan(0);
+    });
+})
